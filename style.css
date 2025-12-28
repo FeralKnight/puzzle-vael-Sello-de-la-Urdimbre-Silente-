@@ -1,0 +1,61 @@
+body {
+  background: #111;
+  color: #ddd;
+  font-family: "Arial", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#puzzle {
+  border: 2px solid #444;
+  padding: 2em;
+  background: #1a1a1a;
+  text-align: center;
+  border-radius: 10px;
+}
+
+button {
+  margin: 0.5em;
+  padding: 0.8em 1.2em;
+  background: #222;
+  color: #ccc;
+  border: 1px solid #555;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: #333;
+}
+
+button:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+.hint {
+  font-style: italic;
+  margin-bottom: 1em;
+}
+button.active {
+  background-color: #4caf50;  /* verde para selección */
+  color: white;
+}
+
+button.correct {
+  background-color: #2196f3;  /* azul para combinación correcta */
+  color: white;
+}
+/* Animación de parpadeo rojo */
+@keyframes blinkRed {
+  0% { background-color: #f44336; color: white; }
+  50% { background-color: #222; color: #ccc; }
+  100% { background-color: #f44336; color: white; }
+}
+
+/* Clase para parpadeo de botones incorrectos */
+button.wrong {
+  animation: blinkRed 0.5s ease 0s 3; /* 3 veces parpadea en 0.5s cada vez */
+}
