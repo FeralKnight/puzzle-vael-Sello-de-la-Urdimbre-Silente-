@@ -1,61 +1,102 @@
 body {
-  background: #111;
-  color: #ddd;
-  font-family: "Arial", sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: url('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjFobWFpYnVrNTh0ZDR1MHVtd2tyZWVrcXRtNDJ5dWFqdDJxNms2NSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3ov9k1173PdfJWRsoE/giphy.gif') no-repeat center center fixed;
+  background-size: cover;
+  color: #f0f0f0;
 }
 
-#puzzle {
-  border: 2px solid #444;
-  padding: 2em;
-  background: #1a1a1a;
+#puzzle-container {
+  max-width: 800px;
+  margin: 50px auto;
+  background: rgba(0,0,0,0.75);
+  padding: 20px;
+  border-radius: 15px;
   text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.8);
+  position: relative;
+}
+
+#phrase-display {
+  font-size: 1.3em;
+  margin: 20px 0;
+  background: rgba(50,50,50,0.8);
+  padding: 15px;
   border-radius: 10px;
 }
 
-button {
-  margin: 0.5em;
-  padding: 0.8em 1.2em;
-  background: #222;
-  color: #ccc;
-  border: 1px solid #555;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-button:hover {
-  background: #333;
-}
-
-button:disabled {
-  background: #555;
-  cursor: not-allowed;
-}
-
-.hint {
+#hint {
   font-style: italic;
-  margin-bottom: 1em;
-}
-button.active {
-  background-color: #4caf50;  /* verde para selección */
-  color: white;
+  margin-bottom: 20px;
+  color: #ccc;
 }
 
-button.correct {
-  background-color: #2196f3;  /* azul para combinación correcta */
-  color: white;
-}
-/* Animación de parpadeo rojo */
-@keyframes blinkRed {
-  0% { background-color: #f44336; color: white; }
-  50% { background-color: #222; color: #ccc; }
-  100% { background-color: #f44336; color: white; }
+.buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-/* Clase para parpadeo de botones incorrectos */
-button.wrong {
-  animation: blinkRed 0.5s ease 0s 3; /* 3 veces parpadea en 0.5s cada vez */
+.buttons-container button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #333;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.buttons-container button:hover {
+  background: #555;
+}
+
+.buttons-container button.correct {
+  background: #4CAF50 !important;
+}
+
+.buttons-container button.wrong {
+  background: #f44336 !important;
+}
+
+#attempts-display {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: rgba(30,30,30,0.8);
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+/* Controles de música abajo izquierda */
+#music-controls {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 999;
+}
+
+#toggle-music {
+  padding: 10px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(30,30,30,0.9);
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#toggle-music:hover {
+  background: rgba(60,60,60,0.95);
+}
+
+#volume-slider {
+  margin-left: 10px;
+  vertical-align: middle;
+  width: 120px;
+  cursor: pointer;
 }

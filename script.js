@@ -1,54 +1,89 @@
-const correctOrder = [0, 2, 1, 3]; // Orden correcto de runas: Negación → Distorsión → Eco → Vacío
+const phraseTemplate = "La ___ te guía en la ___, sus ___ te sacarán del ___";
+const blanksOrder = ["pérdida", "oscuridad", "secretos", "abismo"];
 let input = [];
+let attemptsLeft = 3;
 let solved = false;
 
-const buttons = document.querySelectorAll(".runes button");
+// Mostrar frase inicial
+const phraseDisplay = document.getElementById("phrase-display");
+phraseDisplay.innerText = phraseTemplate;
 
-buttons.forEach(button => {
+// Actualizar intentos
+const attemptsDisplay = document.getElementById("attempts");
+attemptsDisplay.innerText = attemptsLeft;
+
+// Función para mezclar un array
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Mezclar los botones al cargar la página
+const buttonsContainer = document.querySelector(".buttons-container");
+const buttons = Array.from(buttonsContainer.children);
+shuffle(buttons);
+buttons.forEach(btn => buttonsContainer.appendChild(btn));
+
+// Manejo de botones
+document.querySelectorAll(".buttons-container button").forEach(button => {
   button.addEventListener("click", () => {
     if (solved) return;
+    if (attemptsLeft <= 0) return;
 
-    const id = parseInt(button.dataset.id);
+    const word = button.dataset.word;
+    input.push(word);
 
-    // Evita seleccionar el mismo botón varias veces
-    if (!input.includes(id)) {
-      input.push(id);
-      button.classList.add("active"); // verde al seleccionar
-    }
+    // Rellenar la frase en orden
+    let tempPhrase = phraseTemplate;
+    input.forEach((w, i) => {
+      tempPhrase = tempPhrase.replace("___", w);
+    });
+    phraseDisplay.innerText = tempPhrase;
 
-    // Cuando se completa la secuencia
-    if (input.length === correctOrder.length) {
+    // Validación cuando se completan todos los huecos
+    if (input.length === blanksOrder.length) {
       const result = document.getElementById("result");
 
-      if (input.every((v,i) => v === correctOrder[i])) {
-        // Secuencia correcta
-        result.innerHTML = "<strong>El sello se disuelve en silencio.</strong><br>La Urdimbre guarda silencio.";
+      if (input.every((w, i) => w === blanksOrder[i])) {
+        result.innerHTML = "<strong>El Sello de la Urdimbre se disuelve en silencio.</strong><br>Shar observa desde las sombras.";
         solved = true;
-
-        // Cambiar todos los botones al color "correcto" y bloquearlos
-        buttons.forEach(b => {
-          b.classList.add("correct");  // azul brillante
-          b.classList.remove("active"); // quitar verde
-          b.disabled = true;
-        });
-
+        document.querySelectorAll(".buttons-container button").forEach(b => b.disabled = true);
       } else {
-        // Secuencia incorrecta
         result.innerText = "La magia se retuerce y vuelve a sellarse.";
-
-        // Aplicar efecto de parpadeo rojo a todos los botones
-        buttons.forEach(b => {
-          b.classList.add("wrong");       // añadir clase de parpadeo
-          b.classList.remove("active");   // quitar verde
-        });
-
-        // Limpiar la clase 'wrong' después de la animación
-        setTimeout(() => {
-          buttons.forEach(b => b.classList.remove("wrong"));
-        }, 1500); // 0.5s * 3 parpadeos = 1.5s
-
-        input = []; // reinicia la secuencia
+        attemptsLeft--;
+        attemptsDisplay.innerText = attemptsLeft;
+        input = [];
+        phraseDisplay.innerText = phraseTemplate;
       }
     }
   });
+});
+
+// ----------------------------
+// Música Play/Pausa + Volumen
+// ----------------------------
+const music = document.getElementById("bg-music");
+const toggleButton = document.getElementById("toggle-music");
+const volumeSlider = document.getElementById("volume-slider");
+
+// Inicializar volumen al 50%
+music.volume = volumeSlider.value / 100;
+
+// Cambiar volumen en tiempo real
+volumeSlider.addEventListener("input", (e) => {
+  music.volume = e.target.value / 100;
+});
+
+// Play/Pausa
+toggleButton.addEventListener("click", () => {
+  if (music.paused) {
+    music.play();
+    toggleButton.innerText = "⏸️ Pausar";
+  } else {
+    music.pause();
+    toggleButton.innerText = "▶️ Reproducir";
+  }
 });
